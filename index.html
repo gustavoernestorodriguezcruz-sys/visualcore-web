@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualCore | Diagnóstico Inmobiliario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #020617; color: #f1f5f9; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: #1e293b; border-radius: 4px; }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; height: 26px; width: 26px; border-radius: 50%; 
+            background: #22d3ee; cursor: pointer; margin-top: -9px; border: 3px solid #020617;
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+        }
+        .btn-wa { animation: pulse-wa 2s infinite; }
+        @keyframes pulse-wa {
+            0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(34, 211, 238, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen bg-[radial-gradient(circle_at_50%_0%,#1e293b_0%,#020617_100%)]">
+
+    <nav class="fixed w-full z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center glass-card rounded-2xl px-6 py-3">
+            <div class="text-xl font-extrabold flex items-center gap-2 tracking-tighter italic">
+                <i class="fas fa-eye text-cyan-400"></i> VISUAL<span class="text-cyan-400">CORE</span>
+            </div>
+            <div class="text-[10px] font-bold uppercase text-slate-500 tracking-[0.2em]">
+                Santa Cruz • Bolivia
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-32 pb-10 px-6 text-center">
+        <h1 class="text-4xl md:text-6xl font-black mb-6 italic uppercase leading-tight">
+            ¿Su inmueble está de <span class="text-cyan-400">adorno</span>?
+        </h1>
+        <p class="max-w-2xl mx-auto text-slate-400 text-lg">Mueva los parámetros y descubra por qué no está cerrando ventas.</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="glass-card p-8 rounded-[2rem] space-y-12 border-l-4 border-cyan-500">
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-400 mb-6 tracking-widest italic">1. Calidad de Prospectos</label>
+                <input type="range" id="s1" min="0" max="100" step="25" value="0">
+                <div id="d1" class="mt-4 p-4 bg-black/30 rounded-xl text-cyan-400 font-bold italic text-sm border border-cyan-500/10">"Puros preguntones de Marketplace que no tienen un peso."</div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-400 mb-6 tracking-widest italic">2. Impacto Visual</label>
+                <input type="range" id="s2" min="0" max="100" step="25" value="0">
+                <div id="d2" class="mt-4 p-4 bg-black/30 rounded-xl text-cyan-400 font-bold italic text-sm border border-cyan-500/10">"Parece casa embrujada, fotos oscuras con celular."</div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase text-slate-400 mb-6 tracking-widest italic">3. Velocidad de Cierre</label>
+                <input type="range" id="s3" min="0" max="100" step="25" value="0">
+                <div id="d3" class="mt-4 p-4 bg-black/30 rounded-xl text-cyan-400 font-bold italic text-sm border border-cyan-500/10">"Ya se quemó la propiedad. Nadie la quiere."</div>
+            </div>
+        </div>
+
+        <div class="glass-card p-10 rounded-[2rem] text-center border-t-8 border-cyan-500">
+            <h3 class="text-slate-500 text-xs font-bold mb-4 uppercase tracking-widest">Diagnóstico:</h3>
+            <div id="status-tag" class="text-3xl font-black italic mb-2 text-red-500">ESTÁ PERDIENDO PLATA</div>
+            <div id="score-display" class="text-8xl font-black mb-6">0%</div>
+            <p id="status-desc" class="text-slate-400 text-sm italic mb-10 leading-relaxed">"Usted está dejando que el vecino venda primero por tacañear en la imagen. ¡Despierte!"</p>
+
+            <div class="space-y-4">
+                <input type="text" id="phone" placeholder="Su WhatsApp (ej. 78000000)" class="w-full p-5 bg-slate-900 border border-white/10 rounded-2xl text-center font-bold outline-none focus:border-cyan-400">
+                <button onclick="enviarDiagnostico()" class="w-full py-5 bg-cyan-500 text-black font-black rounded-2xl btn-wa uppercase text-lg italic tracking-widest">Quiero vender ya</button>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // Configuración capturada de tu Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBx-hx2hf1Myz_2RoTKWzvLtzTIziWi15A",
+            authDomain: "visualcore-sistema.firebaseapp.com",
+            projectId: "visualcore-sistema",
+            storageBucket: "visualcore-sistema.firebasestorage.app",
+            messagingSenderId: "859989293420",
+            appId: "1:859989293420:web:a7e2a72e2878621987db49"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const textos = {
+            s1: ["Puros preguntones de Marketplace que no tienen un peso.", "Gente que pregunta 'precio' cuando está ahí escrito.", "Curiosos que solo hacen perder tiempo.", "Interesados que piden mil fotos más.", "Clientes con plata en mano listos para verla."],
+            s2: ["Parece casa embrujada, fotos oscuras con celular.", "Se ve desordenado, hasta el perro salió en la foto.", "Fotos normales, del montón.", "Se ve bien, pero no emociona.", "Producción nivel Urubó: Dan ganas de comprarla ya."],
+            s3: ["Ya se quemó la propiedad. Nadie la quiere.", "Lleva meses ahí y ya le bajé el precio de gana.", "Recién publicada pero nadie le tira bola.", "Se mueve lento, llega un llamado al mes.", "Se vende volando por la imagen."]
+        };
+
+        function actualizar() {
+            const v1 = document.getElementById('s1').value;
+            const v2 = document.getElementById('s2').value;
+            const v3 = document.getElementById('s3').value;
+            document.getElementById('d1').innerText = `"${textos.s1[v1/25]}"`;
+            document.getElementById('d2').innerText = `"${textos.s2[v2/25]}"`;
+            document.getElementById('d3').innerText = `"${textos.s3[v3/25]}"`;
+            
+            const score = Math.round((parseInt(v1) + parseInt(v2) + parseInt(v3)) / 3);
+            document.getElementById('score-display').innerText = score + '%';
+            
+            const tag = document.getElementById('status-tag');
+            const desc = document.getElementById('status-desc');
+            
+            if(score < 35) {
+                tag.innerText = "ESTÁ PERDIENDO PLATA"; tag.className = "text-3xl font-black italic mb-2 text-red-500";
+                desc.innerText = '"Usted está dejando que el vecino venda primero por tacañear en la imagen. ¡Despierte!"';
+            } else if(score < 75) {
+                tag.innerText = "PROPIEDAD TIBIA"; tag.className = "text-3xl font-black italic mb-2 text-yellow-500";
+                desc.innerText = '"Recibe llamadas, pero puros buscavidas que quieren rebajas absurdas."';
+            } else {
+                tag.innerText = "MÁQUINA DE VENTAS"; tag.className = "text-3xl font-black italic mb-2 text-green-400";
+                desc.innerText = '"Usted entiende el negocio. Siga así para dominar el mercado."';
+            }
+        }
+
+        window.enviarDiagnostico = async () => {
+            const wa = document.getElementById('phone').value;
+            if(!wa || wa.length < 7) return alert("Por favor, ingresa un número de WhatsApp válido.");
+            
+            const score = document.getElementById('score-display').innerText;
+            
+            try {
+                // Guarda el prospecto en tu Firebase
+                await addDoc(collection(db, 'leads'), {
+                    whatsapp: wa,
+                    puntuacion: score,
+                    fecha: serverTimestamp(),
+                    ciudad: "Santa Cruz"
+                });
+                
+                // Redirige a tu WhatsApp (Cambia el número de abajo por el tuyo)
+                const tuNumero = "59170000000"; // <--- PON TU NÚMERO AQUÍ
+                window.location.href = `https://wa.me/${tuNumero}?text=Hola! Mi propiedad sacó un diagnóstico de ${score} en VisualCore. Necesito mejorar mis ventas.`;
+            } catch (e) {
+                console.error("Error:", e);
+                alert("Hubo un problema. Intenta de nuevo.");
+            }
+        };
+
+        document.querySelectorAll('input[type=range]').forEach(i => i.addEventListener('input', actualizar));
+    </script>
+</body>
+</html>
