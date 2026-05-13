@@ -27,6 +27,21 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
         .btn-glow { animation: pulse-glow 2s infinite; }
         @keyframes pulse-glow { 0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(34, 211, 238, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); } }
+ 
+                        /* Estilo normal de la pestaña Diagnóstico */
+                a[href="diagnostico.html"] {
+                    background-color: #007bff; /* Color azul vibrante */
+                    color: white;
+                    padding: 10px 15px;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    transition: background-color 0.3s ease; /* Transición suave */
+                }
+                
+                /* Estilo cuando pasas el mouse (Hover) */
+                a[href="diagnostico.html"]:hover {
+                    background-color: #28a745; /* Color verde al pasar el mouse */
+}
     </style>
 </head>
 <body class="antialiased min-h-screen bg-[radial-gradient(circle_at_50%_0%,#1e293b_0%,#020617_100%)]">
@@ -37,6 +52,7 @@
                 <i class="fas fa-eye text-cyan-400"></i> VISUAL<span class="text-cyan-400">CORE</span>
             </div>
             <div class="flex gap-4">
+                <a href="mis-formulas.html">Mis Fórmulas</a>
                 <a href="#diagnostico" class="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-white transition">Simulador</a>
                 <a href="#faq" class="text-[10px] font-bold uppercase tracking-widest text-cyan-400">Preguntas</a>
             </div>
