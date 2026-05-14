@@ -40,19 +40,75 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Efecto al pasar el mouse (Hover) */
-.nav-link-diagnostico:hover {
-    background-color: #28a745; /* Cambia a verde 'listo' */
-    box-shadow: 0 0 15px rgba(40, 167, 69, 0.5); /* Resplandor verde */
-    transform: translateY(-2px); /* Pequeño salto hacia arriba */
+/* Botón Diagnóstico: Curvado y Moderno */
+.nav-link-diagnostico {
+    background: #007bff;
+    color: white !important;
+    padding: 8px 20px;
+    border-radius: 50px; /* Bordes bien curvos, nada de cuadrados */
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
 }
 
-/* Efecto cuando se le da click (Active) */
-.nav-link-diagnostico:active {
-    transform: scale(0.95);
+.nav-link-diagnostico:hover {
+    background: #28a745; /* Cambia a verde 'listo' como querías */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
 }
-    
-        .nav-link-mi-formula
+
+/* Estilo para Mis Fórmulas y el Dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.nav-link-mi-formula {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 300; /* Letra delgada profesional */
+    transition: color 0.3s;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(15, 23, 42, 0.95); /* Fondo oscuro elegante */
+    min-width: 180px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+    border: 1px solid #22d3ee;
+    border-radius: 12px;
+    z-index: 1;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: #94a3b8;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+    transition: background 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: rgba(34, 211, 238, 0.1);
+    color: #22d3ee;
+}
+
+/* Mostrar el menú al pasar el mouse */
+.dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.dropdown:hover .nav-link-mi-formula {
+    color: #22d3ee;
+}
     </style>
 </head>
 <body class="antialiased min-h-screen bg-[radial-gradient(circle_at_50%_0%,#1e293b_0%,#020617_100%)]">
